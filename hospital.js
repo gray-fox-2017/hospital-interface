@@ -35,11 +35,10 @@ class Hospital {
         let a = answer.split(',')
         this.addPatient(new Patient(a[0],a[1],a[2]))
         this.clean()
-        console.log(`${answer} Added!`)
+        console.log(`============ New Patient Data ============ `)
+        console.log(`ID:${a[0]}\nName:${a[1]}\nDiagnosis:${a[2]}\nAdded!`)
         this.back()
-      })  
-      this.clean()
-      this.welcome(this.User)  
+      })       
       }
     }
   
@@ -53,11 +52,10 @@ class Hospital {
         let a = answer.split(',')
         this.addEmployee(new Employee(a[0],a[1],a[2],a[3]))
         this.clean()
-        console.log(`${answer} Added!`)
+        console.log(`============ New Employee Data ============ `)
+        console.log(`Name:${a[0]}\nPosition:${a[1]}\nUsername:${a[2]}\nPassword:${a[3]}\nAdded!`)
         this.back()
         })
-        this.clean()
-        this.welcome(this.User)
       }
     }
   
@@ -70,9 +68,9 @@ class Hospital {
   menu(user){
     console.log('=============== Please Input the Menu Number ===============')
     switch(user){
-      case 'Admin' : console.log(' 1> Logout\n 2> List_Patients\n 3> View_Patient <patient id>\n 4> Add_Patient\n 5> Remove_Patient <patient id>\n 6> Add_Employee\n 7> List_Employees\n 8> Remove Employee <employee_name>');break
-      case 'Doctor': console.log(' 1> Logout\n 2> List_Patients\n 3> View_Patient <patient id>\n 4> Add_Patient\n 5> Remove_Patient <patient id>');break
-      case 'Patient': console.log(' 1> Logout\n 2> List_Patients\n 3> View_Patient <patient id>');break
+      case 'Admin' : console.log(' 1> Logout\n 2> List_Patients\n 3> View_Records <patient id>\n 4> Add_Patient\n 5> Remove_Patient <patient id>\n 6> Add_Employee\n 7> List_Employees\n 8> Remove Employee <employee_name>');break
+      case 'Doctor': console.log(' 1> Logout\n 2> List_Patients\n 3> View_Records <patient id>\n 4> Add_Patient\n 5> Remove_Patient <patient id>');break
+      case 'Patient': console.log(' 1> Logout\n 2> List_Patients\n 3> View_Records <patient id>');break
       case 'Office Boy': console.log(' 1> Logout');break
       default: console.log('1> Logout');break
     }
@@ -80,57 +78,54 @@ class Hospital {
   }
   
   command(){
-    rl.question('\n Please input your command here => ', (answer)=>{
+    rl.question('\nPlease input your command here => ', (answer)=>{
       switch(answer.split(' ')[0]){
         case '1': this.User = [];this.clean();this.Start();break
         case '2': this.listPatients();this.back();break
-        case '3': this.viewRecords(answer[1]);this.clean();break
+        case '3': this.viewRecords(answer.split(' ')[1]);break
         case '4': this.addPatient();break
-        case '5': this.removePatient(answer[1]);this.clean();break
+        case '5': this.removePatient(answer.split(' ')[1]);break
         case '6': this.addEmployee();break
         case '7': this.listEmployees(); this.back();break
-        case '8': this.removeEmployee(answer[1]);this.back();break
+        case '8': this.removeEmployee(answer.split(' ')[1]);break
       }
     })
   }
   
-  viewRecords(id){
-    for(let i = 0; i < this.dataPatients.length;i++){
-      if(id === this.dataPatients[i].id){
-        console.log(this.dataPatients[i])
-        this.back()
-      }
-    }
+  viewRecords(patient_id) {
+      this.dataPatients.forEach((data) => {
+        if(data.id.toString() === patient_id){
+          console.log(`Patient records, Name : ${data.name}\n-----------------------------------------`);
+          // if (data.records === null || data.records === undefined){
+          //   console.log("Please input the patient records first")
+          //   this.back()
+          // }
+          // else {
+            console.log(`ID: ${data.id}\nName: ${data.name}\nDiagnosis: ${data.diagnosis}`);
+          // }
+          this.back()
+        }
+      })
   }
   
   removePatient(id){
-    for(let i = 0; i < this.dataPatients.length;i ++){
+    for(let i = 0; i < this.dataPatients.length;i++){
       if(this.dataPatients[i].id === id){
-        this.dataPatients[i].slice(i)
         console.log(`${this.dataPatients[i].name} has been removed!`)
-      }
-    }
-  }
-  
-  removeEmployee(name){
-    if(name === undefined){
-      console.log('please input Employee name')
-      this.clean()
-      this.welcome(this.User)
-    }
-    else{
-    this.dataEmployees.forEach((data)=>{
-      if(this.data.name === name){
-        this.data.slice(i)
-        this.clean()
-        console.log(`${this.data[i].name} has been removed!` )
+        this.dataPatients.splice(i,1)
         this.back()
         }
-    })
-  }
-    
-    this.clean()
-    this.welcome(this.User)
+      }
+    }
+  
+  removeEmployee(name){
+    for(let i =0; i < this.dataEmployees.length;i++){
+      if(this.dataEmployees[i].name === name){
+        console.log(`${this.dataEmployees[i].name} has been fired!`)
+        this.dataEmployees.splice(i,1)
+        this.back()
+      }
+    }    
   }
   
   back(){
@@ -165,6 +160,8 @@ class Hospital {
   }
   
   Start(){
+    // let newPatient = new Patient
+  //  console.log(this.dataPatients[0].id)
     console.log(`============ Welcome to ${this.name} Hospital ============\n ${this.location}`)
     rl.question('\nLogin as [1]Patient [2]Employee ', (answer)=>{
       if(answer === '1'){
@@ -216,7 +213,7 @@ class Hospital {
     
   password(){
     this.clean()
-    rl.question('Please enter your password =>', (answer)=>{
+    rl.question('>Please enter your password =>', (answer)=>{
         if(answer === this.User[1]){
           this.welcome(this.User)
         }
@@ -252,6 +249,8 @@ class Employee {
 let newHospital = new Hospital('Stress','\nJl. Sultan Iskandar Muda No.7, RT.5/RW.9, \nKby. Lama Sel., Kby. Lama, Kota Jakarta Selatan,\n')
 newHospital.addPatient(new Patient(1,'james','sekarat'))
 newHospital.addEmployee(new Employee('Stedy','Admin','stedy','stedy'))
+newHospital.addEmployee(new Employee('James','Doctor','james','james'))
+newHospital.addEmployee(new Employee('Parel','Office Boy','parel','parel'))
 // newHospital.addEmployeeSeeder()
 // newHospital.addPatientSeeder()
 newHospital.Start()

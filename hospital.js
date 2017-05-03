@@ -36,7 +36,7 @@ class Hospital {
         this.addPatient(new Patient(a[0],a[1],a[2]))
         this.clean()
         console.log(`============ New Patient Data ============ `)
-        console.log(`ID:${a[0]}\nName:${a[1]}\nDiagnosis:${a[2]}\nAdded!`)
+        console.log(`\nAdded!\n\nID:${a[0]}\nName:${a[1]}\nDiagnosis:${a[2]}\n`)
         this.back()
       })       
       }
@@ -53,7 +53,7 @@ class Hospital {
         this.addEmployee(new Employee(a[0],a[1],a[2],a[3]))
         this.clean()
         console.log(`============ New Employee Data ============ `)
-        console.log(`Name:${a[0]}\nPosition:${a[1]}\nUsername:${a[2]}\nPassword:${a[3]}\nAdded!`)
+        console.log(`\nAdded!\n\nName:${a[0]}\nPosition:${a[1]}\nUsername:${a[2]}\nPassword:${a[3]}`)
         this.back()
         })
       }
@@ -116,13 +116,25 @@ class Hospital {
         this.back()
         }
       }
+    for(let j = 0; j < this.dataPatients.length;j++){
+      if(this.dataPatients[j].id !== id){
+        console.log(`Invalid ID`)
+        this.back()
+      }
     }
+  }
   
   removeEmployee(name){
     for(let i =0; i < this.dataEmployees.length;i++){
       if(this.dataEmployees[i].name === name){
         console.log(`${this.dataEmployees[i].name} has been fired!`)
         this.dataEmployees.splice(i,1)
+        this.back()
+      }
+    }
+    for(let j = 0; j < this.dataEmployees.length;j++){
+      if(this.dataEmployees[j].name !== name){
+        console.log(`There is no Employee name ${name}`)
         this.back()
       }
     }    

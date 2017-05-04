@@ -8,6 +8,7 @@ class Hospital {
   constructor(name, location) {
     this.name = name
     this.employees = []
+    this.user = []
     // this.patients = patients
     this.location = location
   }
@@ -22,6 +23,8 @@ class Hospital {
       for(let i=0; i<this.employees.length; i++){
         if(this.employees[i]._username==answer){
           loginFlag = true
+          this.user.push(this.employees[i])
+          console.log(this.user)
         }
       }
       if(loginFlag){
@@ -36,21 +39,20 @@ class Hospital {
 
   password(){
     rl.question('Please enter your password: ', (answer) => {
-      let passFlag = false
-      for(let i=0; i<this.employees.length; i++){
-        if(this.employees[i]._password==answer){
-          passFlag = true
-        }
-      }
-      if(passFlag){
+      if(this.user[0]._password==answer){
         console.log('===========================================')
         console.log('sampe sini dulu')
       } else {
         console.log('===========================================')
+        console.log(this.user)
         this.password()
       }
     })
   }
+
+  // welcome(){
+  //   console.log(`Welcome ${this.employees.}`)
+  // }
 }
 
 class Patient {

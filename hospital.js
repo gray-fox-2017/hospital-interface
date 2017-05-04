@@ -9,6 +9,8 @@ class Hospital {
     this.name = name
     this.employees = []
     this.user = []
+    this.menu = []
+    this.selectedMenu = null
     // this.patients = patients
     this.location = location
   }
@@ -17,6 +19,8 @@ class Hospital {
     return this.employees.push(object)
   }
 
+  addPatient(object){}
+
   login(){
     rl.question('Please enter your username: ', (answer) => {
       let loginFlag = false
@@ -24,7 +28,6 @@ class Hospital {
         if(this.employees[i]._username==answer){
           loginFlag = true
           this.user.push(this.employees[i])
-          console.log(this.user)
         }
       }
       if(loginFlag){
@@ -37,22 +40,80 @@ class Hospital {
     })
   }
 
+  logout(){
+    // if(){
+    //   this.user = []
+    //   console.log(`You've been logged out`)
+    //   return this.login()
+    // }
+  }
+
   password(){
     rl.question('Please enter your password: ', (answer) => {
       if(this.user[0]._password==answer){
         console.log('===========================================')
-        console.log('sampe sini dulu')
+        this.welcome()
       } else {
         console.log('===========================================')
-        console.log(this.user)
         this.password()
       }
     })
   }
 
-  // welcome(){
-  //   console.log(`Welcome ${this.employees.}`)
-  // }
+  welcome(){
+    console.log(`Welcome ${this.user[0].name}! Your access level is: ${this.user[0].position}`)
+    console.log('===========================================')
+    console.log('What would you like to do?')
+    this.previlage()
+    this.chooseMenu()
+  }
+
+  previlage(){
+    let num=1
+    if(this.user[0].position == 'Admin'){
+      for(let i=0; i<this.menuList().length; i++){
+        this.menu.push(`[${num}] ${this.menuList()[i]}`)
+        num++
+      }
+    }
+    else if(this.user[0].position == 'Dokter' || this.user[0].position == 'Patient'){
+      for(let i=4; i<this.menuList().length; i++){
+        this.menu.push(`[${num}] ${this.menuList()[i]}`)
+        num++
+      }
+    } else {
+      for(let i=5; i<this.menuList().length; i++){
+        this.menu.push(`[${num}] ${this.menuList()[i]}`)
+        num++
+      }
+    }
+  }
+
+  chooseMenu(){
+    console.log(this.menu.join('\n'))
+    rl.question('Please enter option number: ', (answer) => {
+      if(answer <= this.menu.length && /\d/.test(answer)){
+        this.selectedMenu = answer
+      } else {
+        console.log('===========================================')
+        console.log('What would you like to do?')
+        console.log('please enter correct number')
+        this.chooseMenu()
+      }
+    })
+  }
+
+  menuList(){
+    let listOfMenu = [
+      'Add Employee',
+      'Add New Patient',
+      'List Employees',
+      'List Patients',
+      'Medic Report',
+      'Logout'
+    ]
+    return listOfMenu
+  }
 }
 
 class Patient {
@@ -87,23 +148,6 @@ class Employee {
   }
 }
 
-// function readline(message) {
-//   const readline = require('readline');
-//   const rl = readline.createInterface({
-//     input: process.stdin,
-//     output: process.stdout
-//   });
-//   rl.setPrompt(message);
-//   rl.prompt();
-//
-//   rl.on('line', (line) => {
-//     return line
-//   }).on('close', ()=> {
-//     console.log('Have a great day!');
-//     process.exit(0);
-//   })
-// }
-
 function runner() {
   console.log(`Welcome to ${medika.name} Hospital`)
   console.log(medika.location)
@@ -115,6 +159,5 @@ let medika = new Hospital('Medika Center', 'Jl. Kebayoran Lama No.64, Jakarta')
 medika.addEmployees(new Employee('Abdi Dia', 'Admin', 'abdi', '123'))
 medika.addEmployees(new Employee('Beta Taro', 'Dokter', 'beta', '123'))
 medika.addEmployees(new Employee('Delta Tama', 'OfficeBoy', 'delta', '123'))
-// medika.addEmployees(new Employee('Carli Lima', 'Pasien', 'carli', '123'))
 runner()
-// console.log(medika.login('betas'))
+// console.log(medika.previlage())

@@ -15,8 +15,14 @@ class Hospital {
     }
   }
 
-  removeEmployee(index) {
-    this._employeeList.splice(index, 1);
+  removeEmployee(employeeUsername) {
+    for(let i = 0; i < this._employeeList.length; i++) {
+      if(employeeUsername == this._employeeList[i].username) {
+        this._employeeList.splice(i, 1);
+        return console.log("Employee data deleted!")
+      }
+    }
+    return console.log("Employee data not available!")
   }
 
   addPatient(id, name, diagnosis) {
@@ -25,8 +31,14 @@ class Hospital {
     this.patients = this._patientList.length;
   }
 
-  removePatient(index) {
-    this._patientList.splice(index, 1);
+  removePatient(patientID) {
+    for(let i = 0; i < this._patientList.length; i++) {
+      if(patientID == this._patientList[i].id) {
+        this._patientList.splice(i, 1);
+        return console.log("Patient data deleted!")
+      }
+    }
+    return console.log("Patient data not available!")
   }
 }
 
@@ -59,8 +71,8 @@ class Employee {
 
 class Execute {
   constructor(rumahSakit) {
-    this.separator = "========================================"
     this.db = rumahSakit;
+    this.separator = "====================================================="
 
     this.login();
   }
@@ -68,39 +80,29 @@ class Execute {
   login() {
     console.log(`Welcome to ${this.db.name}`)
     console.log(this.separator)
-    console.log(`Please enter your username:`)
     this.userInput();
   }
 
   userInput() {
-    const r1 = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout
-    });
-    this.user = r1.on('line', (input) => {
-      for(let i = 0; i < this.db._employeeList.length; i++) {
-        if(input == this.db._employeeList[i].username) {
-          console.log(`Please enter your password:`)
-          return this.passInput(i);
-        }
+    this.user = readlineSync.question('Enter your username: \n');
+    for(let i = 0; i < this.db._employeeList.length; i++) {
+      if(this.user == this.db._employeeList[i].username) {
+        return this.passInput(i);
       }
-      console.log(`Not a valid username, enter another one`);
-    });
+    }
+    return this.userInput();
   }
 
   passInput(index) {
-    this.user.close();
-    const r2 = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout
+    this.pass = readlineSync.question('Enter your password: \n', {
+      hideEchoBack: true
     });
-    this.pass = r2.on('line', (input1) => {
-      // this.user.pause();
-      if(input1 == this.db._employeeList[index].password) {
-        return this.welcomeScreen(index);
-      }
-      console.log(`Wrong password`)
-    });
+    if(this.pass == this.db._employeeList[index].password) {
+      return this.welcomeScreen(index);
+    } else {
+      console.log('Wrong password')
+      return this.passInput(index);
+    }
   }
 
   welcomeScreen(index) {
@@ -112,11 +114,6 @@ class Execute {
   }
 
   mainMenu(index) {
-    this.pass.close()
-    const r3 = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout
-    });
     console.log(`What would you like to do?`)
     console.log(`[1] Logout`)
     switch (this.db._employeeList[index].authorization) {
@@ -134,9 +131,8 @@ class Execute {
       console.log(`[4] Remove records`)
         break;
     }
-    this.interact = r3.on('line', (input) => {
-      return this.interaction(index, input);
-    })
+    this.interact = readlineSync.question('Choose your option \n');
+    return this.interaction(index, this.interact)
   }
 
   interaction(index, input) {
@@ -154,7 +150,6 @@ class Execute {
   }
 
   basicInteraction(index, input) {
-    this.interact.close();
     switch (input) {
       case "1":
         this.login();
@@ -166,7 +161,6 @@ class Execute {
   }
 
   limitedInteraction(index, input) {
-    this.interact.close();
     switch (input) {
       case "1":
         return this.login();
@@ -188,7 +182,6 @@ class Execute {
   }
 
   fullInteraction(index, input) {
-    this.interact.close();
     switch (input) {
       case "1":
         return this.login();
@@ -219,26 +212,23 @@ class Execute {
   }
 
   patientList(index) {
-    this.interact.close();
-    console.log(this.db._patientList)
-    this.resumeMainMenu(index)
+    console.log(this.db._patientList);
+    this.resumeMainMenu(index);
   }
 
   employeeList(index) {
-    this.interact.close();
-    console.log(this.db._employeeList)
-    this.resumeMainMenu(index)
+    console.log(this.db._employeeList);
+    this.resumeMainMenu(index);
   }
 
   addingPatient(index) {
-    this.interact.close();
     let arr = [];
-    const r6 = readline.createInterface({
+    const r2 = readline.createInterface({
       input: process.stdin,
       output: process.stdout
     });
     console.log('Enter patient ID: ')
-    this.patientData = r6.on('line', (input) => {
+    this.patientData = r2.on('line', (input) => {
       arr.push(input);
       if(arr.length == 1) console.log('Enter patient name: ')
       if(arr.length == 2) console.log('Enter patient diagnosis: ')
@@ -251,28 +241,19 @@ class Execute {
   }
 
   removingPatient(index) {
-    this.interact.close();
-    const r6 = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout
-    });
-    console.log('Enter patient index: ')
-    this.patientRemove = r6.on('line', (input) => {
-      this.patientRemove.close();
-      this.db.removePatient(Number(input));
-      this.patientList(index);
-    })
+    this.patientID = readlineSync.question('Select patient ID \n');
+    this.db.removePatient(this.patientID)
+    return this.patientList(index);
   }
 
   addingEmployee(index) {
-    this.interact.close();
     let arr = [];
-    const r6 = readline.createInterface({
+    const r2 = readline.createInterface({
       input: process.stdin,
       output: process.stdout
     });
     console.log('Enter employee name: ')
-    this.employeeData = r6.on('line', (input) => {
+    this.employeeData = r2.on('line', (input) => {
       arr.push(input);
       if(arr.length == 1) console.log('Enter employee position: ')
       if(arr.length == 2) console.log('Enter employee username: ')
@@ -286,27 +267,19 @@ class Execute {
   }
 
   removingEmployee(index) {
-    this.interact.close();
-    const r6 = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout
-    });
-    console.log('Enter employee index: ')
-    this.employeeRemove = r6.on('line', (input) => {
-      this.employeeRemove.close();
-      this.db.removeEmployee(Number(input));
-      this.employeeList(index);
-    })
+    this.employeeUser = readlineSync.question('Enter employee username \n');
+    this.db.removeEmployee(this.employeeUser)
+    return this.employeeList(index);
   }
 
   resumeMainMenu(index) {
     console.log(this.separator);
     console.log(`Press enter to continue`)
-    const r5 = readline.createInterface({
+    const r1 = readline.createInterface({
       input: process.stdin,
       output: process.stdout
     });
-    this.resumeMenu = r5.on('line', (input) => {
+    this.resumeMenu = r1.on('line', (input) => {
       this.resumeMenu.close();
       this.mainMenu(index);
     })
@@ -325,6 +298,4 @@ hospital.addPatient("001", "Taufik", "pilek")
 const readline = require('readline');
 var readlineSync = require('readline-sync')
 
-let jalankan = new Execute(hospital);
-// console.log(jalankan)
-
+let program = new Execute(hospital);

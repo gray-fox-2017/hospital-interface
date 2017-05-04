@@ -3,6 +3,22 @@ const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
+
+var Table = require('cli-table2');
+var tableListPatient = new Table({
+    head: ['ID', 'Name    ', 'Diagnosis        ']
+});
+// table is an Array, so you can `push`, `unshift`, `splice` and friends
+var tablePatient = new Table({
+    head: ['ID', 'Name    ', 'Diagnosis        ']
+});
+var tableListEmployee = new Table({
+    head: ['Name    ', 'Position        ']
+});
+var tableEmployee = new Table({
+    head: ['Name    ', 'Position        ']
+});
+
 class Hospital {
   constructor(name, location, employees, patients) {
     this.name = name;
@@ -84,23 +100,25 @@ class Hospital {
   }
 
   listPatients() {
-    console.log("----------------------------------------------------------------");
-    console.log(`ID | Name | Diagnosis`);
-    for (let i = 0; i < this.patients.length ; i++) {
-      console.log(`${this.patients[i].id} | ${this.patients[i].name} | ${this.patients[i].diagnosis}`);
+    for (let i = 0; i < this.patients.length; i++) {
+      tableListPatient.push(
+          [this.patients[i].id, this.patients[i].name, this.patients[i].diagnosis]
+      );
     }
-    console.log(`----------------------------------------------------------------`);
+    console.log(tableListPatient.toString());
+    tableListPatient.length = 0;
   }
 
   viewRecords(id) {
-    console.log(`----------------------------------------------------------------`);
-    console.log(`ID | Name | Diagnosis`);
-    for (let i = 0; i < this.patients.length ; i++) {
+    for (let i = 0; i < this.patients.length; i++) {
       if (this.patients[i].id === id) {
-        console.log(`${this.patients[i].id} | ${this.patients[i].name} | ${this.patients[i].diagnosis}`);
+        tablePatient.push(
+            [this.patients[i].id, this.patients[i].name, this.patients[i].diagnosis]
+        );
+        console.log(tablePatient.toString());
       }
     }
-    console.log(`----------------------------------------------------------------`);
+    tablePatient.length = 0;
   }
 
   addRecord(name,diagnosis) {
@@ -121,23 +139,25 @@ class Hospital {
   }
 
   listEmployees() {
-    console.log(`----------------------------------------------------------------`);
-    console.log(`Name | Position`)
     for (let i = 0; i < this.employees.length ; i++) {
-      console.log(`${this.employees[i].name} | ${this.employees[i].position}`)
+      tableListEmployee.push(
+          [this.employees[i].name, this.employees[i].position]
+      );
     }
-    console.log(`----------------------------------------------------------------`);
+    console.log(tableListEmployee.toString());
+    tableListEmployee.length = 0;
   }
 
   viewEmployee(name) {
-    console.log(`----------------------------------------------------------------`);
-    console.log(`Name | Position`)
     for (let i = 0; i < this.employees.length ; i++) {
-      if (this.employees[i].name === name){
-        console.log(`${this.employees[i].name} | ${this.employees[i].position}`)
+      if (this.employees[i].name.toLowerCase() === name.toLowerCase()) {
+        tableEmployee.push(
+            [this.employees[i].name, this.employees[i].position]
+        );
+        console.log(tableEmployee.toString());
       }
     }
-    console.log(`----------------------------------------------------------------`);
+    tableEmployee.length = 0;
   }
 
   addEmployee(name, position, username, password) {
@@ -274,10 +294,10 @@ class Employee {
 }
 
 let erwin = new Patient('01', 'Erwin', 'Mencret');
-let jumadi = new Patient('02', 'Jumadi', 'Stress karena Coding');
+let jumadi = new Patient('02', 'Jumadi', 'Stress');
 let ade = new Patient('03', 'Ade', 'Cacingan');
 let tirta = new Employee('Tirta', 'Admin', 'raynor', 'mw');
 let akbar = new Employee('Akbar', 'Doctor', 'akbar', 'akb');
 let joko = new Employee('Joko', 'OB', 'joko', '123');
-let hos = new Hospital('Rumah Sehat', 'Jl. Sakura berguguran, Jakarta Tenggara', [tirta, akbar, joko], [erwin, jumadi, ade])
-hos.login()
+let hospital = new Hospital('Rumah Sehat', 'Jl. Sakura berguguran, Jakarta Tenggara', [tirta, akbar, joko], [erwin, jumadi, ade])
+hospital.login();

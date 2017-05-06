@@ -1,8 +1,7 @@
-id, nama,posisi,username,password
-001,Sidik,Owner,sidikriders,rumahsakit
-002,Dikhi,Admin,dikhibulin,adminkuy
-003,Mawar,Dokter,mawarmerah,sehelaipuncukup
-004,Eko,OB,ekogitusih,ekoekoeko
-005,Rini,Suster,kemaririni,kedipkedip
-006,alsfhik,aiksufg,iasufg,ailfgs
-007,alsfhik,aiksufg,iasufg,ailfgs
+nama,posisi,username,password
+Sidik,Owner,sidikriders,rumahsakit
+Dikhi,Admin,dikhibulin,adminkuy
+Mawar,Dokter,mawarmerah,sehelaipuncukup
+Eko,OB,ekogitusih,ekoekoeko
+Rini,Suster,kemaririni,kedipkedip
+Yuju,Suster,yujuyuju,navilerra

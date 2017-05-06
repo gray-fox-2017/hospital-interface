@@ -3,8 +3,8 @@
 const fs = require('fs');
 
 class ListEmployee{
-  constructor(file) {
-    this._file = file
+  constructor() {
+    this._file = 'list-employee.csv'
     this._list = fs.readFileSync(this.file, 'utf-8');
     this._perbaris = this._list.split('\n');
     this._pegawai = this._perbaris.map(x => x.split(','));
@@ -24,15 +24,12 @@ class ListEmployee{
 
   }
 
-  pecatPegawai(attribut, penyebut) {
-    let index = rumahSakit.employees.map(x => x.attribut);
-    let urutanKe = index.indexOf(penyebut);
+  pecatPegawai(input) {
+    let index = this.pegawai.map(x => x.username);
+    let urutanKe = index.indexOf(input);
 
     this._perbaris.splice(urutanKe, 1);
-    fs.writeFileSync(this._file, this._perbaris, 'utf-8');
-
-    return 'Pegawai berhasil di pecat!!'
-
+    fs.writeFileSync(this._file, this._perbaris.join('\n'), 'utf-8');
   }
 
   get file() {
@@ -41,29 +38,19 @@ class ListEmployee{
 
   addPegawai(arr) {
     var anakBaru = new Employee(arr);
-    this._belomdisave.push('\n' + arr.join(','));
+    var sementara = '\n' + arr.join(',');
     this._pegawai.push(anakBaru);
+    fs.appendFileSync(this._file, sementara, 'utf-8');
   }
 
-  save() {
-    if (this._belomdisave.length > 0) {
-      fs.appendFileSync(this._file, this._belomdisave, 'utf-8');
-      this._belomdisave = [];
-      return 'Save berhasil!!'
-    } else {
-      return 'Belum ada penambahan apapun'
-    }
-
-  }
 }
 
 class Employee {
   constructor(arr) {
-    this.id = arr[0]
-    this.name = arr[1]
-    this.position = arr[2]
-    this.username = arr[3]
-    this.password = arr[4]
+    this.name = arr[0]
+    this.position = arr[1]
+    this.username = arr[2]
+    this.password = arr[3]
   }
 }
 

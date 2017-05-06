@@ -1,18 +1,6 @@
 'use strict'
-
 const rls = require('readline-sync');
 const Table = require('cli-table2');
-const { Patient } = require('./patient.js');
-const { Employee } = require('./employee.js');
-// const { Dokters, OBs, Admins } = require('./employee.js');
-// const { Login } = require('./login.js');
-
-let mnPat = ['1. Lihat Data Pasien', '2. Logout'];
-let mnOB = ['1. Lihat Data Saya', '2. Logout'];
-let mnAdm = ['1. Lihat List Pasien', '2. Lihat List Pegawai', '3. Tambah Pasien', '4. Hapus Pasien','5. Tambah Pegawai', '6. Hapus Pegawai','7. Lihat Data Saya' ,'8. Logout'];
-let mnDoc = ['1. Lihat List Pasien', '2. Lihat Record Pasien', '3. Ubah Record Pasien','4. Hapus Record Pasien' ,'5. Lihat Data Saya','6. Logout'];
-let mnEmp = {admin : mnAdm, ob : mnOB, dokter : mnDoc};
-const MENU = {patient : mnPat, employee : mnEmp};
 
 class Hospital {
   constructor(datas) {
@@ -21,9 +9,9 @@ class Hospital {
     this.name = datas.name;
     this._employees  = [];
     this._patients = [];
-    this.hardcode();
+    this.init();
   }
-  hardcode(){
+  init(){
     this.addPatient({name:'poppy',pass:'123'});
     this.addPatient({name:'sari',pass:'123'});
     this.addEmployee({name:'meyer',position:'ob',pass:'123'});
@@ -48,7 +36,9 @@ class Hospital {
 
   showEmployeeDetail(id) {
     let idx = this.getIndex('employee',id.toString());
+    // console.log(idx);
     let body = this._employees[idx];
+    // console.log(body);
     let table = new Table({
         head: ['ID','Nama','Position','Password'],
         style: { 'padding-left': 0, 'padding-right': 0, 'margin-top':0,'margin-bottom':0 }
@@ -127,6 +117,8 @@ class Hospital {
   }
 }
 
+
+
 class StartHospital {
   constructor (datas) {
     this.h = new Hospital(datas);
@@ -147,7 +139,7 @@ class StartHospital {
   doLogout() {
     this.user = null;
     this.menus = [];
-    this.reset_board();
+    // this.loginView();
   }
 
   doLogin() {
@@ -186,6 +178,7 @@ class StartHospital {
     if (data.category === 'employee')
       menu = menu[data.position];
     this.menus = menu;
+
     return data;
   }
 
@@ -238,8 +231,9 @@ class StartHospital {
             break;
         }
       }
-    }
 
+
+    }
     if(this.user !== null) this.showMenu();
     else this.loginView();
   }
@@ -291,8 +285,10 @@ class StartHospital {
       }
     }
 
-    while (nr === '')
+    while (nr === '') {
       nr = rls.question('Masukan record pasien : ').trim();
+    }
+
     this.h.editRecord(idx,nr);
   }
 
@@ -307,6 +303,7 @@ class StartHospital {
         id = '';
       }
     }
+
     this.h.removeRecord(idx);
   }
 
@@ -316,16 +313,21 @@ class StartHospital {
     let name = '';
     let pass = '';
     if (allow) {
-      while (name === '')
+      while (name === '') {
         name = rls.question('Masukan nama pasien : ').trim();
-      while (pass === '')
+      }
+      while (pass === '') {
         pass = rls.question('Masukan password : ',{hideEchoBack:true}).trim();
+      }
       id = this.h.generateId('patient');
       this.h.addPatient({name:name,pass:pass,id:id});
+
       console.log('Berhasil menambahkan pasien');
       this.h.showAllPatients();
     } else
       console.log('Tidak dapat menambahkan pasien, rumah sakit penuh!');
+
+
   }
 
   removePatient() {
@@ -351,14 +353,18 @@ class StartHospital {
     let pass = '';
     let position = '';
     if (allow) {
-      while (name === '')
+      while (name === '') {
         name = rls.question('Masukan nama pegawai : ').trim();
-      while (pass === '')
+      }
+      while (pass === '') {
         pass = rls.question('Masukan password : ',{hideEchoBack:true}).trim();
-      while (position === '' || (position !== 'dokter' && position !== 'admin' && position !== 'ob'))
+      }
+      while (position === '' || (position !== 'dokter' && position !== 'admin' && position !== 'ob')) {
         position = rls.question('Masukan position [dokter|ob|admin]: ').trim();
+      }
       id = this.h.generateId('employee');
       this.h.addEmployee({name:name,pass:pass,id:id,position:position});
+
       this.h.showAllEmployees();
       console.log('Berhasil menambahkan pegawai');
     } else
@@ -387,4 +393,17 @@ class StartHospital {
 
 }
 
+
+let mnPat = ['1. Lihat Data Pasien', '2. Logout'];
+let mnOB = ['1. Lihat Data Saya', '2. Logout'];
+let mnAdm = ['1. Lihat List Pasien', '2. Lihat List Pegawai', '3. Tambah Pasien', '4. Hapus Pasien','5. Tambah Pegawai', '6. Hapus Pegawai','7. Lihat Data Saya' ,'8. Logout'];
+let mnDoc = ['1. Lihat List Pasien', '2. Lihat Record Pasien', '3. Ubah Record Pasien','4. Hapus Record Pasien' ,'5. Lihat Data Saya','6. Logout'];
+let mnEmp = {admin : mnAdm, ob : mnOB, dokter : mnDoc};
+const MENU = {patient : mnPat, employee : mnEmp};
+
+
 let start = new StartHospital({name:'Rumah Sakit Mistis',nemployee:5,npatient:5});
+
+
+
+

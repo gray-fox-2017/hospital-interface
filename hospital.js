@@ -195,7 +195,7 @@ class Hospital {
   rl.question('>Please enter your patient name here => ', (answer)=>{
       this.dataPatients.forEach((data)=>{
         if(data.name === answer){
-          this.User.push(answer,' ','patient')
+          this.User.push(answer,' ','Patient')
           this.welcome(this.User)
         }
         else{
@@ -259,7 +259,7 @@ class Employee {
 }
 
 let newHospital = new Hospital('Stress','\nJl. Sultan Iskandar Muda No.7, RT.5/RW.9, \nKby. Lama Sel., Kby. Lama, Kota Jakarta Selatan,\n')
-newHospital.addPatient(new Patient(1,'james','sekarat'))
+newHospital.addPatient(new Patient(1,'Dery','sekarat'))
 newHospital.addEmployee(new Employee('Stedy','Admin','stedy','stedy'))
 newHospital.addEmployee(new Employee('James','Doctor','james','james'))
 newHospital.addEmployee(new Employee('Parel','Office Boy','parel','parel'))

@@ -5,6 +5,8 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 
+const readlineSync = require("readline-sync");
+
 class Hospital {
     constructor(name, location) {
         this.name = name;
@@ -23,10 +25,10 @@ class Hospital {
         console.log(garisGambar);
         rl.question("[1].Patient\n[2].Employee\nWhich one you want login : ",(Jawaban) =>{
             if(Jawaban === "1" || Jawaban === "Patient"){
-              console.log("Patient Comming Soon");
+                console.log("Patient Comming Soon");
             }
             else if(Jawaban === "2" || Jawaban === "Employee"){
-              this.LoginEmployee();
+                this.LoginEmployee();
             }
             else{
                 this.ResetLine();
@@ -37,7 +39,7 @@ class Hospital {
     }
 
     LoginEmployee(){
-      this.ResetLine();
+        this.ResetLine();
         rl.question("\nPlease input your Username :",(Username) =>{
                 this.dataEmployee.map((data) =>{
                     if(data.username === Username){
@@ -110,7 +112,7 @@ class Hospital {
                     break;
 
                 default : console.log("Reset");
-                break;
+                    break;
             }
         })
     }
@@ -122,6 +124,7 @@ class Hospital {
         this.dataPatient.map((dataPatient) =>{
             console.log(`${dataPatient.id} | ${dataPatient.name} | ${dataPatient.diagnosis}`);
         } )
+
     }
 
     ReportEmployees(){
@@ -132,11 +135,12 @@ class Hospital {
         this.dataEmployee.map((dataEmployees) =>{
             NO++;
             console.log(`${NO} | ${dataEmployees.name} | ${dataEmployees.position}`);
-        } )
+        } );
+
     }
 
     DetailPatient(){
-        console.log(idPatient);
+        let idPatient = readlineSync.question("Please Insert Your Patient ID : ");
         this.dataPatient.map((dataPatient) => {
             if(dataPatient.id.toString() === idPatient) {
                 console.log(`Patient Detail Record, ${dataPatient.name}`);
@@ -179,16 +183,16 @@ class Hospital {
         switch(position){
             //Admin Bisa Semua
             case "Admin" : console.log("\n[1].List Patient \n[2].View Record \n[3].Add Patient\n[4].Remove_Patient\n[5].Add Employee\n[6].List Employee\n[7].Remove Employee\n[0].Logout");
-            break;
+                break;
             //Doctor hanya untuk patient
             case "Doctor" : console.log("\n[1].List Patient\n[2].View Record\n[3].Add Patient\n[4].Remove_Patient\n[0].Logout");
-            break;
+                break;
             //Hanya bisa lihat Record nya sendiri
             case "Patient" : console.log("\n[1].View Record\n[0].Logout");
-            break;
+                break;
             // Logout Doang
             case "Office Boy" : console.log("[0].Logout");
-            break;
+                break;
         }
         this.ChooseMenu();
     }
@@ -201,20 +205,20 @@ class Hospital {
 }
 
 class Patient {
-  constructor(id, name, diagnosis) {
-    this.id = id;
-    this.name = name;
-    this.diagnosis = diagnosis;
-  }
+    constructor(id, name, diagnosis) {
+        this.id = id;
+        this.name = name;
+        this.diagnosis = diagnosis;
+    }
 }
 
 class Employee {
-  constructor(name, position, username, password) {
-    this.name = name;
-    this.position = position;
-    this.username = username;
-    this.password = password;
-  }
+    constructor(name, position, username, password) {
+        this.name = name;
+        this.position = position;
+        this.username = username;
+        this.password = password;
+    }
 }
 
 const Rs = new Hospital("Welcome Rumah Sakit Berkah","Jalan Ahamad yani no 21");

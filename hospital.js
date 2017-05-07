@@ -136,11 +136,13 @@ class Hospital {
             NO++;
             console.log(`${NO} | ${dataEmployees.name} | ${dataEmployees.position}`);
         } );
+        this.back();
 
     }
 
     DetailPatient(){
-        let idPatient = readlineSync.question("Please Insert Your Patient ID : ");
+        // Masih bermasalah di sini karena tidak tau cara get ID nya
+       // let idPatient = readlineSync.question("Please Insert Your Patient ID : ");
         this.dataPatient.map((dataPatient) => {
             if(dataPatient.id.toString() === idPatient) {
                 console.log(`Patient Detail Record, ${dataPatient.name}`);
@@ -148,6 +150,7 @@ class Hospital {
                 console.log(`ID : ${dataPatient.id} | Name : ${dataPatient.name} | Diagnosis : ${dataPatient.diagnosis}`);
             }
         });
+        this.back();
     }
 
     addEmployee(data){
@@ -163,11 +166,37 @@ class Hospital {
     }
 
     DeletePatient(){
-
+        // Masih bermasalah di sini karena tidak tau cara get ID nya
+        for(let i = 0; i < this.dataPatient.length;i++){
+            if(this.dataPatient[i].id === id){
+                console.log(`${this.dataPatient[i].name} has been removed!`)
+                this.dataPatient.splice(i,1)
+                this.back()
+            }
+        }
+        for(let j = 0; j < this.dataPatient.length;j++){
+            if(this.dataPatient[j].id !== id){
+                console.log(`Invalid ID`)
+                this.back()
+            }
+        }
     }
 
     DeleteEmployee(){
-
+        // Masih bermasalah di sini karena tidak tau cara get ID nya
+        for(let i =0; i < this.dataEmployee.length;i++){
+            if(this.dataEmployee[i].name === name){
+                console.log(`${this.dataEmployee[i].name} has been fired!`)
+                this.dataEmployee.splice(i,1)
+                this.back()
+            }
+        }
+        for(let j = 0; j < this.dataEmployee.length;j++){
+            if(this.dataEmployee[j].name !== name){
+                console.log(`There is no Employee name ${name}`)
+                this.back()
+            }
+        }
     }
 
     WelcomeUser(){
@@ -200,6 +229,17 @@ class Hospital {
 
     ResetLine(){
         console.log("\x1B[2J");
+    }
+
+    back(){
+        rl.question('\nPlease press enter to go back', (answer)=>{
+            if(!answer){
+                this.welcome(this.User)
+            }
+            else{
+                this.back()
+            }
+        })
     }
 
 }

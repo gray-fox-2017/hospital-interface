@@ -1,0 +1,23 @@
+{
+  "name": "hospital-interface",
+  "version": "0.0.1",
+  "description": "",
+  "main": "hospital.js",
+  "dependencies": {
+    "cli-table": "^0.3.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gray-fox-2017/hospital-interface.git"
+  },
+  "author": "zulfikarannur",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gray-fox-2017/hospital-interface/issues"
+  },
+  "homepage": "https://github.com/gray-fox-2017/hospital-interface#readme"
+}

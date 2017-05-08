@@ -45,6 +45,38 @@ class Hospital {
     })
   }
 
+  removeEmployee(list){
+    this.listEmployees(this.employees);
+    console.log('\n=====please input employee ID=====')
+    rl.question('Delete Employee with ID: ', (answer) => {
+      let id = answer
+      for(let i=0; i<list.length; i++){
+        if(id == i+1){
+          console.log(`Employee: ${list[i].name} telah dihapus` )
+          list.splice(i, 1)
+          this.employees = list
+        }
+      }
+      this.backMenu();
+    })
+  }
+
+  removePatient(list){
+    this.listPatients(this.patients);
+    console.log('\n=====please input Patient ID=====')
+    rl.question('Delete Patient with ID: ', (answer) => {
+      let id = answer
+      for(let i=0; i<list.length; i++){
+        if(id == i+1){
+          console.log(`Pasien: ${list[i]._name} telah dihapus` )
+          list.splice(i, 1)
+          this.patients = list
+        }
+      }
+      this.backMenu();
+    })
+  }
+
   newPatient(){
     console.log('\n \n ===========please input patient details===========')
     rl.question('Patient ID: ', (answer) => {
@@ -66,7 +98,6 @@ class Hospital {
     for(let i=0; i<listEmployees.length; i++){
       console.log(`[${i+1}] ${listEmployees[i].name}`)
     }
-    this.backMenu()
   }
 
   listPatients(listPatients){
@@ -74,7 +105,6 @@ class Hospital {
     for(let i=0; i<listPatients.length; i++){
       console.log(`[${listPatients[i]._id}] ${listPatients[i]._name}`)
     }
-    this.backMenu()
   }
 
   medicReport(){
@@ -148,10 +178,10 @@ class Hospital {
       this.fullAccess()
     }
     else if(this.user[0].position == 'Doctor' || this.user[0].position == 'Patient'){
-      this.showMenu(3)
+      this.showMenu(5)
       this.limitedAccess()
     } else {
-      this.showMenu(5)
+      this.showMenu(7)
       this.basicminimAccess()
     }
   }
@@ -167,15 +197,23 @@ class Hospital {
             this.newPatient();
             break;
           case '3':
-            this.listEmployees(this.employees);
+            this.removeEmployee(this.employees);
             break;
           case '4':
-            this.listPatients(this.patients);
+            this.removePatient(this.patients);
             break;
           case '5':
-            this.medicReport();
+            this.listEmployees(this.employees);
+            this.backMenu()
             break;
           case '6':
+            this.listPatients(this.patients);
+            this.backMenu()
+            break;
+          case '7':
+            this.medicReport();
+            break;
+          case '8':
             this.logout();
             break;
           default:
@@ -197,6 +235,7 @@ class Hospital {
         switch(answer){
           case '1':
             this.listPatients(this.patients);
+            this.backMenu()
             break;
           case '2':
             this.medicReport();
@@ -245,6 +284,8 @@ class Hospital {
     let listOfMenu = [
       'Add Employee',
       'Add New Patient',
+      'Remove Employee',
+      'Remove Patient',
       'List Employees',
       'List Patients',
       'Medic Report',

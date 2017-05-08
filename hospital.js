@@ -1,5 +1,5 @@
 const readline = require('readline');
-const Menu = require('./menu.js')
+// const Menu = require('./menu.js')
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
@@ -215,13 +215,13 @@ class Hospital {
     } else if(this.role=='receptionist') {
       if(this.patients.length>0){
         rl.question('Input patient ID: ',(line)=>{
-          let index = 0
+          let index = 'a'
           for(let i=0;i<this.patients.length;i++){
             if(line==this.patients[i]['id']){
               index = i
             }
           }
-          if(index==0){
+          if(index=='a'){
             sentence = `ID INVALID`
             wormspace();
             this.menu();
@@ -242,13 +242,13 @@ class Hospital {
     } else {
       if(this.patients.length>0){
         rl.question('Input patient ID: ',(line)=>{
-          let index = 0
+          let index = 'a'
           for(let i=0;i<this.patients.length;i++){
             if(line==this.patients[i]['id']){
               index = i
             }
           }
-          if(index==0){
+          if(index=='a'){
             sentence = `ID INVALID`
             wormspace();
             this.menu();

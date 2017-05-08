@@ -115,14 +115,17 @@ class SimHospital {
     let menuOptions = [`[1] Logout`, `[2] Patients List`, `[3] Add patients`, `[4] Remove patients`, `[5] Employee List`, `[6] Add employee`, `[7] Remove employee`];
     switch(this.hospital._employees[this.user]._position) {
       case "administrator":
+        console.log(`You're a ${this.hospital._employees[this.user]._position}.`);
         menuOptions.map(string => console.log(string))
         break;
       case "doctor":
+        console.log(`You're a ${this.hospital._employees[this.user]._position}.`);
         for (let i=0; i<4; i++) {
           console.log(menuOptions[i]);
         }
         break;
       default:
+        console.log(`You're a ${this.hospital._employees[this.user]._position}.`);
         console.log(menuOptions[0]);
     }
     let options = readlineSync.question(`Please choose the number of an action that you'd like to do.\n`);

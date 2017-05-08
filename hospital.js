@@ -42,7 +42,7 @@ class Hospital {
             this.currentName = namanya;
             this.currentPosition = posisinya;
             console.log('\x1B[2J')
-            console.log('\n\nmenuju menu utama ya ' + namanya + '\n\n');
+            console.log('\n\nmenuju menu utama ya ' + namanya + ' si ' + posisinya + '\n\n');
 
             this.menuUtama()
           } else {
@@ -193,7 +193,8 @@ class Hospital {
                 let karyawanBaru = [namaBaru, posisiBaru, usernameBaru, passBaru];
                 this.employees.addPegawai(karyawanBaru);
                 console.log(`\n${namaBaru} sudah berhasil di masukkan ke daftar karyawan ${this.name}.\n\n`);
-
+                this.employees = new ListEmployee();
+                
                 rl.question(`[1] Kembali ke menu utama\nMau ngapain lagi nih ${this.currentName}??   `, x => {
                   if (x == 1 || x == "") {
                     this.menuUtama()

@@ -23,16 +23,13 @@ class Hospital {
         console.log(nameRumahSakit);
         console.log(addrRumahSakit);
         console.log(garisGambar);
-        rl.question("[1].Patient\n[2].Employee\nWhich one you want login : ",(Jawaban) =>{
-            if(Jawaban === "1" || Jawaban === "Patient"){
-                console.log("Patient Comming Soon");
-            }
-            else if(Jawaban === "2" || Jawaban === "Employee"){
+        rl.question("[1].Employee\nWhich one you want login : ",(Jawaban) =>{
+            if(Jawaban === "1" || Jawaban === "Employee"){
                 this.LoginEmployee();
             }
             else{
                 this.ResetLine();
-                console.log("Sorry must be 1 or 2, you typing Patient or Employee ");
+                console.log("Sorry must be 1");
                 this.welcome();
             }
         });
@@ -124,7 +121,7 @@ class Hospital {
         this.dataPatient.map((dataPatient) =>{
             console.log(`${dataPatient.id} | ${dataPatient.name} | ${dataPatient.diagnosis}`);
         } )
-
+        this.back();
     }
 
     ReportEmployees(){
@@ -143,60 +140,84 @@ class Hospital {
     DetailPatient(){
         // Masih bermasalah di sini karena tidak tau cara get ID nya
        // let idPatient = readlineSync.question("Please Insert Your Patient ID : ");
-        this.dataPatient.map((dataPatient) => {
-            if(dataPatient.id.toString() === idPatient) {
-                console.log(`Patient Detail Record, ${dataPatient.name}`);
+       rl.question("Masukan ID : ", (Jawaban) =>{
+        this.dataPatient.forEach((d) => {
+            if(d.id === Jawaban) {
+                console.log(`Patient Detail Record, ${d.name}`);
                 console.log(`=============================================`);
-                console.log(`ID : ${dataPatient.id} | Name : ${dataPatient.name} | Diagnosis : ${dataPatient.diagnosis}`);
+                console.log(`ID : ${d.id} | Name : ${d.name} | Diagnosis : ${d.diagnosis}`);
             }
         });
         this.back();
+      });
     }
 
     addEmployee(data){
         if(data !== undefined){
             this.dataEmployee.push(data);
         }
+        else{
+          rl.question('\nPlease input (name), (Position), (Username), (Password) ex.(Angga, Office Boy, coba, 123456) ' ,(Jawaban) =>{
+            let temp = Jawaban.split(',')
+            this.addEmployee(new Employee(temp[0],temp[1],temp[2],temp[3]))
+            this.ResetLine();
+            console.log(`============ New Employee Data ============ `)
+            console.log(`\nAdded!\n\nName:${temp[0]}\nPosition:${temp[1]}\nUsername:${temp[2]}\nPassword:${temp[3]}`)
+            this.back()
+          });
     }
+  }
 
     addPatient(data){
-        if(data !== undefined){
-            this.dataPatient.push(data);
+    if(data !== undefined){
+          this.dataPatient.push(data);
         }
+    else{
+      rl.question('\nPlease input (ID), (Name), (Diagnosis) ex.(002, Antoni, Stress)',(Jawaban) =>{
+        let temp = Jawaban.split(',')
+        this.addEmployee(new Patient(temp[0],temp[1],temp[2],temp[3]))
+        this.ResetLine();
+        console.log(`============ New Patient Data ============ `)
+        console.log(`\nAdded!\n\nID:${temp[0]}\nName:${temp[1]}\nDiagnosis:${temp[2]}`);
+        this.back()
+      });
     }
+  }
 
     DeletePatient(){
-        // Masih bermasalah di sini karena tidak tau cara get ID nya
-        for(let i = 0; i < this.dataPatient.length;i++){
-            if(this.dataPatient[i].id === id){
-                console.log(`${this.dataPatient[i].name} has been removed!`)
-                this.dataPatient.splice(i,1)
-                this.back()
-            }
-        }
-        for(let j = 0; j < this.dataPatient.length;j++){
-            if(this.dataPatient[j].id !== id){
-                console.log(`Invalid ID`)
-                this.back()
-            }
-        }
+        rl.question("Masukan ID : ",(Jawaban) =>{
+          for(let i = 0; i < this.dataPatient.length;i++){
+              if(this.dataPatient[i].id === Jawaban){
+                  console.log(`${this.dataPatient[i].name} has been removed!`)
+                  this.dataPatient.splice(i,1)
+                  this.back()
+              }
+          }
+          for(let j = 0; j < this.dataPatient.length;j++){
+              if(this.dataPatient[j].id !== Jawaban){
+                  console.log(`Invalid ID`)
+                  this.back()
+              }
+          }
+        });
     }
 
     DeleteEmployee(){
-        // Masih bermasalah di sini karena tidak tau cara get ID nya
-        for(let i =0; i < this.dataEmployee.length;i++){
-            if(this.dataEmployee[i].name === name){
-                console.log(`${this.dataEmployee[i].name} has been fired!`)
-                this.dataEmployee.splice(i,1)
-                this.back()
-            }
-        }
-        for(let j = 0; j < this.dataEmployee.length;j++){
-            if(this.dataEmployee[j].name !== name){
-                console.log(`There is no Employee name ${name}`)
-                this.back()
-            }
-        }
+        rl.question("Masukan Nama : ",(name) =>{
+          for(let i =0; i < this.dataEmployee.length;i++){
+              if(this.dataEmployee[i].name === name){
+                  console.log(`${this.dataEmployee[i].name} has been fired!`)
+                  this.dataEmployee.splice(i,1)
+                  this.back()
+              }
+          }
+          for(let j = 0; j < this.dataEmployee.length;j++){
+              if(this.dataEmployee[j].name !== name){
+                  console.log(`There is no Employee name ${name}`)
+                  this.back()
+              }
+          }
+        })
     }
 
     WelcomeUser(){

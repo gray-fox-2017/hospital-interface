@@ -128,9 +128,10 @@ class Employee {
 }
 
 // Controller
-let hospital = new Hospital ('Tumbuh Kembang', 'Depo1k');
-let doctor = new Employee ('Dr.Ade', 'Doctor', 'Ade', 'Ade123');
+let hospital = new Hospital ('Tumbuh Kembang', 'Depok');
+let doctor = new Employee ('Dr.doctor', 'Doctor', 'doctor', 'doctor123');
 let admin = new Employee ('Admin', 'Admin', 'admin', 'admin123');
+let ob = new Employee ('anugerah', 'OB', 'ob123', 'ob123');
 let identity = [];
 let patientArr = [];
 let employeeArr = [];
@@ -141,10 +142,10 @@ rl.setPrompt(`\n===================================================\n Welcome to
 rl.prompt();
 
 rl.on('line', (answer) => {
-  if (answer === 'Ade' || answer === 'admin') {
+  if (answer === 'doctor' || answer === 'admin' || answer === 'ob123') {
     identity.push(answer);
   }
-  if (identity[0] === 'Ade' || identity[0] === 'admin') {
+  if (identity[0] === 'doctor' || identity[0] === 'admin' || identity[0] === 'ob123' ) {
     if (stage === 0) {
       stage = 1;
       rl.setPrompt(`Please enter your password:\n`);
@@ -177,6 +178,33 @@ rl.on('line', (answer) => {
       console.log('===================================================');
       rl.setPrompt('Please enter number of option: ');
     }
+    ///////////////////////////////////////////////
+    else if (identity[0] === ob.username && answer === ob.password && stage === 1) {
+      stage = 2;
+      console.log('===================================================');
+      console.log(`Welcome, ${ob.name}. Your access level is: ${ob.position}`);
+      console.log('===================================================');
+      console.log('What would you like to do?');
+      console.log('\nOptions:\n');
+      console.log('[4] exit');
+      console.log('===================================================');
+      rl.setPrompt('Please enter number of option: ');
+    }
+    ///////////////////////////////
+    else if (identity[0] === ob.username) {
+      if (stage === 2) {
+        switch (answer) {
+          case '4':
+            console.log('Have a great day!');
+            process.exit(0);
+            break;
+          default:
+            console.log("Please input correct number.");
+            break;
+        }
+      }
+    }
+    //////////////////////////////
     else if (identity[0] === doctor.username) {
       if (stage === 2) {
         switch (answer) {
